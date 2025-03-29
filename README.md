@@ -1,8 +1,8 @@
 
-# 离散随机变量矩母函数与特征函数计算项目
+# Mass Function描述的离散随机变量的矩母函数与特征函数计算项目
 
 ## 项目概述
-本项目主要用于计算离散随机变量的矩母函数（Moment Generating Function, MGF）和特征函数（Characteristic Function, CF），并通过它们计算离散随机变量的高阶矩。同时，项目还包含了傅里叶变换相关的函数，以及用于生成和处理质量分布的类。
+本项目主要用于计算Mass Function描述的离散随机变量的矩母函数（Moment Generating Function, MGF）和特征函数（Characteristic Function, CF），并通过它们计算离散随机变量的高阶矩。同时，项目还包含了傅里叶变换相关的函数，以及用于生成和处理质量分布的类。
 
 
 
