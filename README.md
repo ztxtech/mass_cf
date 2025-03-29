@@ -99,5 +99,5 @@ print(f"特征函数法计算的 {order} 阶矩: {cf}")
 - 由于数值稳定性的问题，高阶导数计算可能会产生较大的误差。在处理高精度要求的任务时，需要考虑使用其他方法或进行数值稳定性优化。
 
 ## 作者
-- Tianxiang Zhan
-- Duozi Lin
+- Duozi Lin (**Main Contributor**)
+- Tianxiang Zhan (**Mentor Role**)
