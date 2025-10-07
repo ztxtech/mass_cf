@@ -1,103 +1,143 @@
+<div align="center">
 
-# Mass Function描述的离散随机变量的矩母函数与特征函数计算项目
+  <h2>Central Moments of Belief Information</h2>
 
-## 项目概述
-本项目主要用于计算Mass Function描述的离散随机变量的矩母函数（Moment Generating Function, MGF）和特征函数（Characteristic Function, CF），并通过它们计算离散随机变量的高阶矩。同时，项目还包含了傅里叶变换相关的函数，以及用于生成和处理质量分布的类。
+  <br>
+  
+  <p>
+      Xingyuan Chen<sup>1,2,3</sup>&nbsp;
+      Duozi Lin<sup>4</sup>&nbsp;
+      <a href="https://ztxtech.github.io/">Tianxiang Zhan</a><sup>1</sup>&nbsp;
+      Yong Deng<sup>1 ★</sup>&nbsp;
+  </p>
+  
+  <p>
+      <sup>1</sup> University of Electronic Science and Technology of China &nbsp;&nbsp;
+      <sup>2</sup> Kunming University &nbsp;&nbsp; 
+      <sup>3</sup> Yunnan Province Key Laboratory of Intelligent Logistics Equipment and Systems &nbsp;&nbsp; <br>
+      <sup>4</sup> Zhejiang University &nbsp;&nbsp; 
+      <sup>★</sup> Corresponding Author <br>
+  </p>
+  
+  <p align="center">
+    <a href="./README_zh.md">中文版本</a>
+  </p>
+  
+</div>
 
+## Project Overview
 
+This project is primarily used to calculate the Moment Generating Function (MGF) and Characteristic Function (CF) of discrete random variables described by Mass Function, and compute higher-order moments of discrete random variables through them. Additionally, the project includes functions related to Fourier transform and classes for generating and processing mass distributions.
 
-## 为什么使用 PyTorch
-### 自动求导功能
-PyTorch 提供了强大的自动求导系统（Autograd），它能根据用户定义的计算图自动计算梯度。在本项目中，我们需要计算离散随机变量矩母函数的高阶导数，手动求导过程繁琐且容易出错。使用 PyTorch 的自动求导功能，我们可以通过简单的代码实现高阶导数的计算，大大提高了开发效率。
+## Why Use PyTorch
 
-### 动态计算图
-PyTorch 的动态计算图特性允许在运行时动态构建计算图。这使得代码更加灵活，便于调试和实现复杂的模型。在计算高阶矩时，我们可以根据不同的阶数动态调整计算过程，而无需提前定义固定的计算图。
+### Automatic Differentiation
 
-### 张量计算
-PyTorch 的张量（Tensor）数据结构和高效的张量计算能力，使得我们可以方便地处理大规模数据。在本项目中，我们需要处理概率向量、随机变量取值向量等数据，PyTorch 的张量操作可以高效地完成这些计算任务。
+PyTorch provides a powerful automatic differentiation system (Autograd), which can automatically compute gradients based on the computation graph defined by the user. In this project, we need to compute high-order derivatives of the moment generating function of discrete random variables, which is tedious and error-prone when done manually. Using PyTorch's automatic differentiation capability, we can achieve high-order derivative computation with simple code, greatly improving development efficiency.
 
-## 为什么利用求导能加速高阶矩的计算
-### 理论基础
-根据特征函数的性质，离散随机变量的 $n$ 阶矩可以通过对特征函数 $\varphi(t)$ 求 $n$ 阶导数并在 $t = 0$ 处求值得到，即 $\mathbb{E}[X^n] = \frac{1}{i^n} \left. \frac{d^n \varphi(t)}{dt^n} \right|_{t = 0}$。利用这个性质，我们可以将高阶矩的计算转化为求导运算。
+### Dynamic Computation Graph
 
-### 计算效率
-传统的高阶矩计算方法可能需要对每个样本进行多次乘法和求和操作，计算复杂度较高。而利用求导的方法，我们可以通过自动求导系统一次性计算出高阶导数，避免了重复的计算过程，从而提高了计算效率。特别是在处理大规模数据时，这种方法的优势更加明显。
+PyTorch's dynamic computation graph feature allows the computation graph to be constructed dynamically at runtime. This makes the code more flexible and easier to debug and implement complex models. When calculating high-order moments, we can dynamically adjust the computation process according to different orders without having to predefine a fixed computation graph.
 
-### 代码实现
-在代码中，我们通过设置 `create_graph=True` 参数，在计算梯度时创建一个新的计算图，从而实现高阶导数的计算。以下是一个简单的代码示例：
-```python
+### Tensor Computation
+
+PyTorch's tensor data structure and efficient tensor computation capabilities make it easy to handle large-scale data. In this project, we need to process probability vectors, random variable value vectors, and other data, and PyTorch's tensor operations can efficiently complete these computation tasks.
+
+## Why Derivatives Can Accelerate High-Order Moment Calculation
+
+### Theoretical Foundation
+
+According to the properties of characteristic functions, the nth-order moment of a discrete random variable can be obtained by taking the nth derivative of the characteristic function φ(t) and evaluating it at t = 0, i.e., E[X^n] = (1/i^n) \* d^nφ(t)/dt^n |\_{t=0}. Using this property, we can transform the calculation of high-order moments into differentiation operations.
+
+### Computational Efficiency
+
+Traditional methods for calculating high-order moments may require multiple multiplication and summation operations for each sample, resulting in high computational complexity. With the differentiation method, we can compute high-order derivatives 一次性 through the automatic differentiation system, avoiding repeated computation processes and thereby improving computational efficiency. This advantage is particularly evident when dealing with large-scale data.
+
+### Code Implementation
+
+In the code, we set the create_graph=True parameter to create a new computation graph when computing gradients, thereby enabling high-order derivative computation. Here is a simple code example:
+
 ```python
 import torch
 
 def discrete_cf(p, x, t):
     """
-    计算离散随机变量的特征函数
-    :param p: 概率向量
-    :param x: 随机变量取值向量
-    :param t: 参数 t
-    :return: 特征函数的值
+    Calculate the characteristic function of a discrete random variable
+    :param p: Probability vector
+    :param x: Random variable value vector
+    :param t: Parameter t
+    :return: Value of the characteristic function
     """
-    exp_term = torch.exp(1j * t * x)  # 1j 表示虚数单位
+    exp_term = torch.exp(1j * t * x)  # 1j represents the imaginary unit
     product_term = exp_term * p
     cf_value = torch.sum(product_term)
     return cf_value
 
 def calculate_high_order_moments(p, x, order):
     """
-    计算离散随机变量的高阶矩
-    :param p: 概率向量
-    :param x: 随机变量取值向量
-    :param order: 矩的阶数
-    :return: 高阶矩的值
+    Calculate high-order moments of a discrete random variable
+    :param p: Probability vector
+    :param x: Random variable value vector
+    :param order: Order of the moment
+    :return: Value of the high-order moment
     """
     t = torch.tensor(0.0, requires_grad=True)
     cf_value = discrete_cf(p, x, t)
     for _ in range(order):
-        # 计算梯度，并创建新的计算图以支持高阶导数计算
+        # Compute gradient and create a new computation graph to support high-order derivative computation
         grads = torch.autograd.grad(cf_value, t, create_graph=True)[0]
         cf_value = grads
-    # 在 t = 0 处计算高阶矩
+    # Calculate high-order moment at t = 0
     high_order_moment = cf_value.detach() / (1j**order)
     return high_order_moment
 ```
 
-## 安装依赖
-在项目根目录下运行以下命令安装所需的 Python 依赖包：
+## Installation Dependencies
+
+Run the following command in the project root directory to install the required Python dependency packages:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-## 运行项目
-在项目根目录下运行以下命令启动主程序：
+## Running the Project
+
+Run the following command in the project root directory to start the main program:
+
 ```bash
 python src/main.py
 ```
 
-## 代码示例
-以下是一个简单的代码示例，展示如何使用 `FMassDistribution` 类计算高阶矩：
+## Code Example
+
+Here is a simple code example showing how to use the FMassDistribution class to compute high-order moments:
+
 ```python
 from cf.generation import sin_p1
 from cf.group import FMassDistribution
 
-# 创建 FMassDistribution 实例
+# Create FMassDistribution instance
 fm = FMassDistribution(sin_p1)
 
-# 设置基数
+# Set cardinality
 cardinality = 5
 
-# 采样
+# Sampling
 vector, mass = fm.sampling(cardinality)
 
-# 计算高阶矩
+# Calculate high-order moments
 order = 3
 cf = fm.high_order_moments_from_cf(order, vector)
-print(f"特征函数法计算的 {order} 阶矩: {cf}")
+print(f"{order}-th moment calculated by characteristic function method: {cf}")
 ```
 
-## 注意事项
-- 请确保在运行项目前已经安装了所需的 Python 依赖包。
-- 由于数值稳定性的问题，高阶导数计算可能会产生较大的误差。在处理高精度要求的任务时，需要考虑使用其他方法或进行数值稳定性优化。
+## Notes
 
-## 作者
-- Duozi Lin (**Main Contributor**)
+- Please ensure that the required Python dependency packages are installed before running the project.
+- Due to numerical stability issues, high-order derivative computation may produce large errors. When handling tasks with high precision requirements, other methods or numerical stability optimization should be considered.
+
+## Authors
+
+- Duozi Lin (**Main Contributor & Concept & Methodological Design**)
+- Xinyuan Chen (**Concept**)
 - Tianxiang Zhan (**Mentor Role**)
