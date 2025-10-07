@@ -27,7 +27,7 @@
 
 ## Project Overview
 
-This project is primarily used to calculate the Moment Generating Function (MGF) and Characteristic Function (CF) of discrete random variables described by Mass Function, and compute higher-order moments of discrete random variables through them. Additionally, the project includes functions related to Fourier transform and classes for generating and processing mass distributions.
+This project is primarily used to calculate the Moment Generating Function (MGF) and Characteristic Function (CF) of discrete random variables described by a mass function, and compute higher-order moments of discrete random variables through them. Additionally, the project includes functions related to Fourier transforms and classes for generating and processing mass distributions.
 
 ## Why Use PyTorch
 
@@ -47,15 +47,15 @@ PyTorch's tensor data structure and efficient tensor computation capabilities ma
 
 ### Theoretical Foundation
 
-According to the properties of characteristic functions, the nth-order moment of a discrete random variable can be obtained by taking the nth derivative of the characteristic function φ(t) and evaluating it at t = 0, i.e., E[X^n] = (1/i^n) \* d^nφ(t)/dt^n |\_{t=0}. Using this property, we can transform the calculation of high-order moments into differentiation operations.
+According to the properties of characteristic functions, the $n$-th moment of a discrete random variable can be obtained by taking the $n$-th derivative of the characteristic function $\varphi(t)$ and evaluating it at $t = 0$, i.e., $\mathbb{E}[X^n] = \frac{1}{i^n} \left. \frac{d^n \varphi(t)}{dt^n} \right|_{t = 0}$. Using this property, we can transform the calculation of high-order moments into differentiation operations.
 
 ### Computational Efficiency
 
-Traditional methods for calculating high-order moments may require multiple multiplication and summation operations for each sample, resulting in high computational complexity. With the differentiation method, we can compute high-order derivatives 一次性 through the automatic differentiation system, avoiding repeated computation processes and thereby improving computational efficiency. This advantage is particularly evident when dealing with large-scale data.
+Traditional methods for calculating high-order moments may require multiple multiplication and summation operations for each sample, resulting in high computational complexity. With the differentiation method, we can compute high-order derivatives directly through the automatic differentiation system, avoiding repeated computation processes and thereby improving computational efficiency. This advantage is particularly evident when dealing with large-scale data.
 
 ### Code Implementation
 
-In the code, we set the create_graph=True parameter to create a new computation graph when computing gradients, thereby enabling high-order derivative computation. Here is a simple code example:
+In the code, we set the `create_graph=True` parameter to create a new computation graph when computing gradients, thereby enabling high-order derivative computation. Here is a simple code example:
 
 ```python
 import torch
@@ -110,7 +110,7 @@ python src/main.py
 
 ## Code Example
 
-Here is a simple code example showing how to use the FMassDistribution class to compute high-order moments:
+Here is a simple code example showing how to use the `FMassDistribution` class to compute high-order moments:
 
 ```python
 from cf.generation import sin_p1
@@ -128,7 +128,7 @@ vector, mass = fm.sampling(cardinality)
 # Calculate high-order moments
 order = 3
 cf = fm.high_order_moments_from_cf(order, vector)
-print(f"{order}-th moment calculated by characteristic function method: {cf}")
+print(f"Characteristic function method calculated {order}-th moment: {cf}")
 ```
 
 ## Notes
