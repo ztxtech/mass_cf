@@ -13,8 +13,8 @@
   
   <p>
       <sup>1</sup> University of Electronic Science and Technology of China &nbsp;&nbsp;
-      <sup>2</sup> Kunming University &nbsp;&nbsp; 
-      <sup>3</sup> Yunnan Province Key Laboratory of Intelligent Logistics Equipment and Systems &nbsp;&nbsp; <br>
+      <sup>2</sup> Kunming University &nbsp;&nbsp; <br>
+      <sup>3</sup> Yunnan Province Key Laboratory of Intelligent Logistics Equipment and Systems &nbsp;&nbsp; 
       <sup>4</sup> Zhejiang University &nbsp;&nbsp; 
       <sup>★</sup> Corresponding Author <br>
   </p>

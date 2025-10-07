@@ -1,5 +1,3 @@
-# Mass Function 描述的离散随机变量的矩母函数与特征函数计算项目
-
 > 英文版本请参考 [README.md](README.md)
 
 ## 项目概述
